@@ -16,11 +16,11 @@ public class TriggerManager : MonoBehaviour
     }
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 9)
         {
 
-            Transform enemyTransform = collision.transform;
-            Animator enemyAnimator = collision.GetComponent<Animator>();
+            Transform enemyTransform = collision.transform.parent;
+            Animator enemyAnimator = collision.GetComponentInParent<Animator>();
 
             Vector3 direction = (target.position - enemyTransform.position).normalized;
             direction.y = 0;
@@ -40,7 +40,7 @@ public class TriggerManager : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Animator enemyAnimator = other.GetComponent<Animator>();
+        Animator enemyAnimator = other.GetComponentInParent<Animator>();
         enemyAnimator.SetBool("IsMoving", false);
     }
 }

@@ -4,20 +4,27 @@ using UnityEngine;
 public class AttackTrigger : MonoBehaviour
 {
     [SerializeField] GameObject UIVictory;
+    int propulsionForce = 25;
+
+    bool waitForAttack;
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7)
+        if (other.gameObject.layer == 7 && !waitForAttack)
         {
-            Animator enemyAnimator = other.GetComponent<Animator>();
-            enemyAnimator.SetTrigger("Die");
-            StartCoroutine(Die(other.gameObject));
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            enemy.rb.AddForce(transform.forward * propulsionForce, ForceMode.Impulse);
+            enemy.TakeDamage(1);
+            StartCoroutine(WaitToAttack());
         }
 
     }
-    private IEnumerator Die(GameObject enemy)
+
+    IEnumerator WaitToAttack()
     {
-        yield return new WaitForSeconds(1f);
-        Destroy(enemy);
-        UIVictory.SetActive(true);
+        waitForAttack = true;
+        yield return new WaitForSeconds(0.5f);
+        waitForAttack = false;
     }
 }

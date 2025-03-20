@@ -1,14 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 public class ColliderManager : MonoBehaviour
 {
-
     [SerializeField] TriggerManager triggerManager;
-    [SerializeField] float propulsionForce = 0.001f;
+    [SerializeField] float propulsionForce = 5f;
 
     PlayerController player;
+
+    bool waitForAttack;
 
     private void Awake()
     {
@@ -17,20 +17,37 @@ public class ColliderManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 7 && !waitForAttack)
         {
             Animator enemyAnimator = collision.gameObject.GetComponent<Animator>();
-            enemyAnimator.SetTrigger("Attack");
+            if (enemyAnimator != null)
+            {
+                enemyAnimator.SetTrigger("Attack");
+            }
+
             triggerManager.touch = true;
-            player.rb.linearVelocity += collision.transform.forward * propulsionForce;
+
+            player.rb.AddForce(collision.contacts[0].normal * propulsionForce, ForceMode.Impulse);
+
+
+            StartCoroutine(WaitToAttack());
             player.TakeDamage(1);
         }
-
-
     }
+
+    IEnumerator WaitToAttack()
+    {
+        waitForAttack = true;
+        yield return new WaitForSeconds(0.25f);
+        waitForAttack = false;
+    }
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.layer == 7)
+        {
             triggerManager.touch = false;
+        }
     }
+    
 }

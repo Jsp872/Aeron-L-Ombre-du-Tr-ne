@@ -1,26 +1,43 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static event Action<int> OnLifeChanged;
+    public static event Action<int> OnStaminaChanged;
+    public static event Action<int> OnManaChanged;
+
+
+    [SerializeField] GameObject player;
     private Vector3 direction;
     public float moveSpeed = 5f;
     [SerializeField] private InputActionReference inputActionMove;
     private Animator animator;
     [SerializeField] private BoxCollider boxCollider;
 
-    [SerializeField] int life= 3;
+    [SerializeField] int life= 100;
+    int stamina = 100;
+    int mana = 100;
+    float stockMoveSpeed = 5;
 
     [SerializeField] GameObject UIDefeat;
     public Rigidbody rb;
 
     bool attack;
+    bool isRunning;
+    bool block;
+
+    private Coroutine sprintCoroutine;
+
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+
+        StartCoroutine(RecoveryStaminaAndMana());
     }
 
     private void Update()
@@ -32,6 +49,39 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsMoving", direction.magnitude > 0);
 
         DirectionOfMove();
+
+        TestMana();
+    }
+
+    public void TestMana()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (mana >= 50)
+            {
+                mana -= 50;
+                OnManaChanged?.Invoke(mana);
+            }
+        }
+    }
+
+    IEnumerator RecoveryStaminaAndMana()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (stamina < 100 && !attack && !isRunning && !block)
+            {
+                stamina = Mathf.Min(stamina + 20, 100);
+                OnStaminaChanged?.Invoke(stamina);
+            }
+            if (mana < 100)
+            {
+                mana = Mathf.Min(mana + 10, 100);
+                OnManaChanged?.Invoke(mana);
+            }
+        }
     }
 
     private void DirectionOfMove()
@@ -48,11 +98,83 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack()
     {
-        animator.SetTrigger("Attack");
-        boxCollider.enabled = true;
-        if (!attack)
+        if (stamina >= 20 && !attack)
+        {
+            stamina -= 20;
+            OnStaminaChanged?.Invoke(stamina);
+            animator.SetTrigger("Attack");
+            boxCollider.enabled = true;
             StartCoroutine(TimeOfAttack());
+        }
     }
+
+    public void OnDash()
+    {
+        if (stamina >= 50)
+        {
+            stamina -= 50;
+            OnStaminaChanged?.Invoke(stamina);
+            rb.AddForce(transform.forward * 100, ForceMode.Impulse);
+            animator.SetTrigger("Dash");
+            boxCollider.enabled = true;
+            StartCoroutine(TimeOfAttack());
+        }
+    }
+
+    public void OnSprint()
+    {
+        if (stamina > 0 && sprintCoroutine == null)
+        {
+            isRunning = true;
+            moveSpeed *= 2;
+            sprintCoroutine = StartCoroutine(DrainStamina());
+        }
+        animator.SetBool("Running", true);
+    }
+
+    public void OnUnSprint()
+    {
+        isRunning = false;
+        moveSpeed = stockMoveSpeed;
+
+        if (sprintCoroutine != null)
+        {
+            StopCoroutine(sprintCoroutine);
+            sprintCoroutine = null;
+        }
+        animator.SetBool("Running", false);
+    }
+
+    public void OnBlock()
+    {
+        moveSpeed = stockMoveSpeed / 2;
+
+        block = true;
+        animator.SetBool("Block", true);
+    }
+
+    public void OnUnBlock()
+    {
+        moveSpeed = stockMoveSpeed;
+        block = false;
+        animator.SetBool("Block", false);
+    }
+
+    IEnumerator DrainStamina()
+    {
+        while (isRunning && stamina > 0)
+        {
+            stamina = Mathf.Max(stamina - 10, 0);
+            OnStaminaChanged?.Invoke(stamina);
+
+            if (stamina == 0)
+                OnUnSprint();
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+
 
     IEnumerator TimeOfAttack()
     {
@@ -63,14 +185,45 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        life -= damage;
+        if (block && stamina >= 30)
+        {
+            damage /= 2;
+            stamina -= 30;
+            OnStaminaChanged?.Invoke(stamina);
+        }
+
+        int finalDamage = Mathf.FloorToInt(damage);
+        if (finalDamage > 0)
+        {
+            life -= finalDamage;
+            animator.SetTrigger("Hit");
+            StartCoroutine(HitAnim());
+            OnLifeChanged?.Invoke(life);
+        }
+
+
         if (life <= 0)
         {
             Destroy(gameObject);
             Time.timeScale = 0;
             UIDefeat.SetActive(true);
+        }
+    }
+
+
+    IEnumerator HitAnim()
+    {
+        int count = 0;
+        int maxCount = 3;
+        while (count < maxCount)
+        {
+            player.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            player.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            count++;
         }
     }
 }
