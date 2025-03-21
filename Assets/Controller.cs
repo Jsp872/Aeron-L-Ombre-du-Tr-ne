@@ -89,6 +89,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""fed91f22-1b7c-4a50-b7ed-a9ed13104d39"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""UnBlock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73ad47a8-1c1b-4b19-8cb2-aa92619bd674"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_Player_UnSprint = m_Player.FindAction("UnSprint", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_UnBlock = m_Player.FindAction("UnBlock", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@Controller()
@@ -300,6 +321,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_UnSprint;
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_UnBlock;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @Controller m_Wrapper;
@@ -311,6 +333,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @UnSprint => m_Wrapper.m_Player_UnSprint;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @UnBlock => m_Wrapper.m_Player_UnBlock;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -341,6 +364,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @UnBlock.started += instance.OnUnBlock;
             @UnBlock.performed += instance.OnUnBlock;
             @UnBlock.canceled += instance.OnUnBlock;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -366,6 +392,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @UnBlock.started -= instance.OnUnBlock;
             @UnBlock.performed -= instance.OnUnBlock;
             @UnBlock.canceled -= instance.OnUnBlock;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -392,5 +421,6 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnUnSprint(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnUnBlock(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

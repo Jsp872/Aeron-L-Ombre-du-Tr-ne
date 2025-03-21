@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField] GameObject player;
+    [SerializeField] GameObject UiPause;
     private Vector3 direction;
     public float moveSpeed = 5f;
     [SerializeField] private InputActionReference inputActionMove;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     bool attack;
     bool isRunning;
     bool block;
+    public bool isPause;
 
     private Coroutine sprintCoroutine;
 
@@ -86,19 +88,22 @@ public class PlayerController : MonoBehaviour
 
     private void DirectionOfMove()
     {
-        if (direction.x > 0)
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-        else if (direction.x < 0)
-            transform.rotation = Quaternion.Euler(0, -90, 0);
-        else if (direction.z > 0 && direction.x == 0)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        else if (direction.z < 0 && direction.x == 0)
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+        if (!isPause)
+        {
+            if (direction.x > 0)
+                transform.rotation = Quaternion.Euler(0, 90, 0);
+            else if (direction.x < 0)
+                transform.rotation = Quaternion.Euler(0, -90, 0);
+            else if (direction.z > 0 && direction.x == 0)
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            else if (direction.z < 0 && direction.x == 0)
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
 
     public void OnAttack()
     {
-        if (stamina >= 20 && !attack)
+        if (stamina >= 20 && !attack && !isPause)
         {
             stamina -= 20;
             OnStaminaChanged?.Invoke(stamina);
@@ -110,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDash()
     {
-        if (stamina >= 50)
+        if (stamina >= 50 && !isPause)
         {
             stamina -= 50;
             OnStaminaChanged?.Invoke(stamina);
@@ -123,7 +128,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSprint()
     {
-        if (stamina > 0 && sprintCoroutine == null)
+        if (stamina > 0 && sprintCoroutine == null && !isPause)
         {
             isRunning = true;
             moveSpeed *= 2;
@@ -147,10 +152,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnBlock()
     {
-        moveSpeed = stockMoveSpeed / 2;
+        if (!isPause)
+        {
+            moveSpeed = stockMoveSpeed / 2;
 
-        block = true;
-        animator.SetBool("Block", true);
+            block = true;
+            animator.SetBool("Block", true);
+        }
     }
 
     public void OnUnBlock()
@@ -158,6 +166,13 @@ public class PlayerController : MonoBehaviour
         moveSpeed = stockMoveSpeed;
         block = false;
         animator.SetBool("Block", false);
+    }
+
+    public void OnPause()
+    {
+        isPause = true;
+        Time.timeScale = 0;
+        UiPause.SetActive(true);
     }
 
     IEnumerator DrainStamina()
