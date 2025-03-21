@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +8,11 @@ public class statUIManager : MonoBehaviour
     [SerializeField] Slider hpBar;
     [SerializeField] Slider staminaBar;
     [SerializeField] Slider manaBar;
+
+    [SerializeField] GameObject pausePanel;
+    [SerializeField] GameObject optionPanel;
+
+    [SerializeField] PlayerController player;
 
     private void OnEnable()
     {
@@ -25,7 +31,7 @@ public class statUIManager : MonoBehaviour
     public void OnReplayButton()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Game");
     }
 
     private void OnHpChange(int newLife)
@@ -41,5 +47,24 @@ public class statUIManager : MonoBehaviour
     private void OnManaChange(int newMana)
     {
         manaBar.value = newMana;
+    }
+
+    public void OnContinueButton()
+    {
+        player.isPause = false;
+        Time.timeScale = 1;
+        pausePanel.SetActive(false);
+    }
+
+    public void OnOptionButton()
+    {
+        optionPanel.SetActive(true);
+    }
+
+    public void OnMenuButton()
+    {
+        player.isPause = false;
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu");
     }
 }
