@@ -4,22 +4,31 @@ using UnityEngine;
 public class AttackTrigger : MonoBehaviour
 {
     [SerializeField] GameObject UIVictory;
-    int propulsionForce = 25;
+    [SerializeField] int propulsionForce = 25;
 
     bool waitForAttack;
+    PlayerController player;
 
+    private void Awake()
+    {
+        player = GetComponentInParent<PlayerController>();
+    }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == 7 && !waitForAttack)
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            enemy.rb.AddForce(transform.forward * propulsionForce, ForceMode.Impulse);
+
+            Vector2 forceDirection = player.lastMoveDirection;
+            if (forceDirection == Vector2.zero) forceDirection = Vector2.right;
+
+            enemy.rb.AddForce(forceDirection * propulsionForce, ForceMode2D.Impulse);
             enemy.TakeDamage(1);
             StartCoroutine(WaitToAttack());
         }
-
     }
+
 
     IEnumerator WaitToAttack()
     {

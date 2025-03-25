@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class ColliderManager : MonoBehaviour
@@ -7,7 +8,6 @@ public class ColliderManager : MonoBehaviour
     [SerializeField] float propulsionForce = 5f;
 
     PlayerController player;
-
     bool waitForAttack;
 
     private void Awake()
@@ -15,21 +15,14 @@ public class ColliderManager : MonoBehaviour
         player = GetComponent<PlayerController>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 7 && !waitForAttack)
         {
-            Animator enemyAnimator = collision.gameObject.GetComponent<Animator>();
-            if (enemyAnimator != null)
-            {
-                enemyAnimator.SetTrigger("Attack");
-            }
-
             triggerManager.touch = true;
+            Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
-            player.rb.AddForce(collision.contacts[0].normal * propulsionForce, ForceMode.Impulse);
-
-
+            player.rb.AddForce(knockbackDirection * propulsionForce, ForceMode2D.Impulse);
             StartCoroutine(WaitToAttack());
             player.TakeDamage(1);
         }
@@ -42,12 +35,11 @@ public class ColliderManager : MonoBehaviour
         waitForAttack = false;
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 7)
         {
             triggerManager.touch = false;
         }
     }
-    
 }

@@ -3,16 +3,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] GameObject enemy;
 
     [SerializeField] int life = 3;
     Animator animator;
-    public Rigidbody rb;
+    public Rigidbody2D rb;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
     }
     public void TakeDamage(int damage)
     {
@@ -25,9 +24,8 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Die()
     {
-        animator.SetTrigger("Die");
         gameObject.layer = 8;
-        gameObject.GetComponentInChildren<SphereCollider>().enabled = false;
+        gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
