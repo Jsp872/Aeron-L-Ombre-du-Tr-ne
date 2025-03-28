@@ -98,6 +98,24 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MagicMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""b0451592-6faa-45c8-9cc0-b770049e6bd5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActivateMagic"",
+                    ""type"": ""Button"",
+                    ""id"": ""9dcf62f4-c566-4934-aab7-11985be044da"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +250,28 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4833e0b-93a1-4eb5-b87d-9ba93747933e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MagicMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2106bba5-aefa-48b5-bc19-efe3bb7af019"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivateMagic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +288,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_UnBlock = m_Player.FindAction("UnBlock", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_MagicMenu = m_Player.FindAction("MagicMenu", throwIfNotFound: true);
+        m_Player_ActivateMagic = m_Player.FindAction("ActivateMagic", throwIfNotFound: true);
     }
 
     ~@Controller()
@@ -322,6 +364,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_UnBlock;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_MagicMenu;
+    private readonly InputAction m_Player_ActivateMagic;
     public struct PlayerActions
     {
         private @Controller m_Wrapper;
@@ -334,6 +378,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @UnBlock => m_Wrapper.m_Player_UnBlock;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @MagicMenu => m_Wrapper.m_Player_MagicMenu;
+        public InputAction @ActivateMagic => m_Wrapper.m_Player_ActivateMagic;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -367,6 +413,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @MagicMenu.started += instance.OnMagicMenu;
+            @MagicMenu.performed += instance.OnMagicMenu;
+            @MagicMenu.canceled += instance.OnMagicMenu;
+            @ActivateMagic.started += instance.OnActivateMagic;
+            @ActivateMagic.performed += instance.OnActivateMagic;
+            @ActivateMagic.canceled += instance.OnActivateMagic;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -395,6 +447,12 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @MagicMenu.started -= instance.OnMagicMenu;
+            @MagicMenu.performed -= instance.OnMagicMenu;
+            @MagicMenu.canceled -= instance.OnMagicMenu;
+            @ActivateMagic.started -= instance.OnActivateMagic;
+            @ActivateMagic.performed -= instance.OnActivateMagic;
+            @ActivateMagic.canceled -= instance.OnActivateMagic;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -422,5 +480,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnBlock(InputAction.CallbackContext context);
         void OnUnBlock(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnMagicMenu(InputAction.CallbackContext context);
+        void OnActivateMagic(InputAction.CallbackContext context);
     }
 }

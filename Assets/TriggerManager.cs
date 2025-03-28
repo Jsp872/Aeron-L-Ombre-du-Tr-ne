@@ -4,8 +4,6 @@ public class TriggerManager : MonoBehaviour
 {
     Transform target;
     [SerializeField] Transform player;
-
-    [SerializeField] float speed = 2f;
     public bool touch;
 
     bool oneTimeSaveScale = false;
@@ -22,6 +20,7 @@ public class TriggerManager : MonoBehaviour
         {
             Transform enemyTransform = collision.transform.parent;
             Animator enemyAnimator = collision.GetComponentInParent<Animator>();
+            Enemy enemy = collision.GetComponentInParent<Enemy>();
 
             Vector2 direction = (target.position - enemyTransform.position).normalized;
 
@@ -41,7 +40,7 @@ public class TriggerManager : MonoBehaviour
 
             if (!touch)
             {
-                enemyTransform.position = Vector2.MoveTowards(enemyTransform.position, target.position, speed * Time.deltaTime);
+                enemyTransform.position = Vector2.MoveTowards(enemyTransform.position, target.position, enemy.moveSpeed * Time.deltaTime);
             }
         }
         if (collision.gameObject.layer == 10)

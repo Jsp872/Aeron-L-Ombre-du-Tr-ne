@@ -4,10 +4,12 @@ using UnityEngine;
 public class AttackTrigger : MonoBehaviour
 {
     [SerializeField] GameObject UIVictory;
-    [SerializeField] int propulsionForce = 25;
+    public int propulsionForce = 25;
 
     bool waitForAttack;
     PlayerController player;
+
+    public int damage = 1;
 
     private void Awake()
     {
@@ -24,7 +26,7 @@ public class AttackTrigger : MonoBehaviour
             if (forceDirection == Vector2.zero) forceDirection = Vector2.right;
 
             enemy.rb.AddForce(forceDirection * propulsionForce, ForceMode2D.Impulse);
-            enemy.TakeDamage(1);
+            enemy.TakeDamage(damage);
             StartCoroutine(WaitToAttack());
         }
     }

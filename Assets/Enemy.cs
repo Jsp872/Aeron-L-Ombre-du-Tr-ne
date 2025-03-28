@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
+    public int moveSpeed = 2;
     [SerializeField] int life = 3;
     Animator animator;
     public Rigidbody2D rb;

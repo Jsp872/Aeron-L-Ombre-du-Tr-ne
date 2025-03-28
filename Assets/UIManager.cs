@@ -13,12 +13,16 @@ public class statUIManager : MonoBehaviour
     [SerializeField] GameObject optionPanel;
 
     [SerializeField] PlayerController player;
+    [SerializeField] PlayerMagic playerMagic;
+
+    [SerializeField] GameObject UiMenuMagic;
 
     private void OnEnable()
     {
         PlayerController.OnLifeChanged += OnHpChange;
         PlayerController.OnStaminaChanged += OnStaminaChange;
         PlayerController.OnManaChanged += OnManaChange;
+        PlayerMagic.OnManaChanged += OnManaChange;
     }
 
     private void OnDisable()
@@ -26,6 +30,7 @@ public class statUIManager : MonoBehaviour
         PlayerController.OnLifeChanged -= OnHpChange;
         PlayerController.OnStaminaChanged -= OnStaminaChange;
         PlayerController.OnManaChanged -= OnManaChange;
+        PlayerMagic.OnManaChanged -= OnManaChange;
     }
 
     public void OnReplayButton()
@@ -66,5 +71,10 @@ public class statUIManager : MonoBehaviour
         player.isPause = false;
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnCloseMagicMenuButton()
+    {
+        UiMenuMagic.SetActive(false);
     }
 }

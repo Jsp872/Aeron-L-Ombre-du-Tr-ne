@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,25 +12,27 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 lastMoveDirection { get; private set; }
 
+    public bool ice;
 
     SpriteRenderer spriteRenderer;
     [SerializeField] GameObject UiPause;
     private Vector3 direction;
     public float moveSpeed = 5f;
     [SerializeField] private InputActionReference inputActionMove;
+    [SerializeField] private InputActionReference inputActionChooseMagic;
     private Animator animator;
     [SerializeField] private BoxCollider2D boxCollider;
 
     [SerializeField] int life= 100;
     int stamina = 100;
-    int mana = 100;
+    public int mana = 100;
     float stockMoveSpeed = 5;
 
     [SerializeField] GameObject UIDefeat;
     public Rigidbody2D rb;
 
     bool attack;
-    bool isRunning;
+    public bool isRunning;
     bool block;
     public bool isPause;
 
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float propulsionForce;
 
+    PlayerMagic playerMagic;
 
     private void Awake()
     {
@@ -45,6 +49,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         StartCoroutine(RecoveryStaminaAndMana());
+        playerMagic = GetComponent<PlayerMagic>();
     }
 
     private void FixedUpdate()
@@ -58,20 +63,8 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("IsMoving", direction.magnitude > 0);
         DirectionOfMove();
-        TestMana();
-    }
-
-
-    public void TestMana()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (mana >= 50)
-            {
-                mana -= 50;
-                OnManaChanged?.Invoke(mana);
-            }
-        }
+        if (mana <= 0) 
+            playerMagic.OnActivateMagic();
     }
 
     IEnumerator RecoveryStaminaAndMana()
@@ -85,7 +78,7 @@ public class PlayerController : MonoBehaviour
                 stamina = Mathf.Min(stamina + 20, 100);
                 OnStaminaChanged?.Invoke(stamina);
             }
-            if (mana < 100)
+            if (mana < 100 && !playerMagic.activate)
             {
                 mana = Mathf.Min(mana + 10, 100);
                 OnManaChanged?.Invoke(mana);
@@ -158,7 +151,7 @@ public class PlayerController : MonoBehaviour
         if (stamina > 0 && sprintCoroutine == null && !isPause)
         {
             isRunning = true;
-            moveSpeed *= 2;
+            moveSpeed = 10;
             sprintCoroutine = StartCoroutine(DrainStamina());
         }
         animator.SetBool("Running", true);
@@ -167,7 +160,7 @@ public class PlayerController : MonoBehaviour
     public void OnUnSprint()
     {
         isRunning = false;
-        moveSpeed = stockMoveSpeed;
+        moveSpeed = 5;
 
         if (sprintCoroutine != null)
         {
@@ -229,11 +222,13 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (ice)
+            damage /= 2;
 
         if (block && stamina >= 30)
         {
             damage /= 2;
-            stamina -= 30;
+                stamina -= 30;
             OnStaminaChanged?.Invoke(stamina);
         }
 
