@@ -18,8 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject UiPause;
     private Vector3 direction;
     public float moveSpeed = 5f;
-    [SerializeField] private InputActionReference inputActionMove;
-    [SerializeField] private InputActionReference inputActionChooseMagic;
+    [SerializeField] InputActionReference inputActionMove;
     private Animator animator;
     [SerializeField] private BoxCollider2D boxCollider;
 
@@ -66,6 +65,7 @@ public class PlayerController : MonoBehaviour
         if (mana <= 0) 
             playerMagic.OnActivateMagic();
     }
+
 
     IEnumerator RecoveryStaminaAndMana()
     {

@@ -6,7 +6,7 @@ public class UIManagerForMainMenu : MonoBehaviour
     [SerializeField] GameObject optionPanel;
     public void StartGame()
     {
-        SceneManager.LoadScene("CastleStart");
+        SceneManager.LoadScene("Game");
     }
     public void OnOptionButton()
     {
