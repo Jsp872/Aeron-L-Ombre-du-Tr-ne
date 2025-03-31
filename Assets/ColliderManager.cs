@@ -8,7 +8,7 @@ public class ColliderManager : MonoBehaviour
     [SerializeField] float propulsionForce = 5f;
 
     PlayerController player;
-    bool waitForAttack;
+    public bool waitForAttack;
 
     private void Awake()
     {
@@ -31,6 +31,11 @@ public class ColliderManager : MonoBehaviour
                 player.rb.AddForce(knockbackDirection * enemy.propulsionForce, ForceMode2D.Impulse);
             StartCoroutine(WaitToAttack());
             player.TakeDamage(enemy.damage);
+            if (enemy.finalBoss || enemy.falseFinalBoss)
+            {
+                Animator enemyAnimator = collision.gameObject.GetComponent<Animator>();
+                enemyAnimator.SetTrigger("Attack");
+            }
         }
         if (collision.gameObject.layer == 12)
         {

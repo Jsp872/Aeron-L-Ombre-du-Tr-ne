@@ -11,6 +11,7 @@ public class PlayerMagic : MonoBehaviour
     bool upMagic;
     [SerializeField] Image UpCircleMagic;
     [SerializeField] GameObject UiMenuMagic;
+    [SerializeField] TileMapManager tMM;
 
     ParticleSystem particleMagic;
 
@@ -103,6 +104,7 @@ public class PlayerMagic : MonoBehaviour
         player.moveSpeed = 5;
         player.ice = false;
         attackTrigger.propulsionForce = 25;
+        activate = true;
     }
 
     void SetIce()
@@ -113,6 +115,7 @@ public class PlayerMagic : MonoBehaviour
         else player.moveSpeed = 5;
         player.ice = true;
         attackTrigger.propulsionForce = 25;
+        activate = true;
     }
 
     void SetThunder()
@@ -123,6 +126,7 @@ public class PlayerMagic : MonoBehaviour
         else player.moveSpeed = 8;
         player.ice = false;
         attackTrigger.propulsionForce = 25;
+        activate = true;
     }
 
     void SetWind()
@@ -134,6 +138,7 @@ public class PlayerMagic : MonoBehaviour
         player.moveSpeed = 5;
         player.ice = false;
         attackTrigger.propulsionForce = 50;
+        activate = true;
     }
 
     void SetNormal()
@@ -163,35 +168,55 @@ public class PlayerMagic : MonoBehaviour
                 switch (magicNumber)
                 {
                     case 1:
-                        UpCircleMagic.color = Color.red;
-                        mainModule.startColor = Color.red;
-                        SetFire();
+                        if (tMM.numberOfBossKilled >= 2)
+                        {
+                            UpCircleMagic.color = Color.red;
+                            mainModule.startColor = Color.red;
+                            SetFire();
+                        }
                         break;
 
                     case 2:
-                        UpCircleMagic.color = Color.cyan;
-                        mainModule.startColor = Color.cyan;
-                        SetIce();
+                        if (tMM.numberOfBossKilled >= 3)
+                        {
+                            UpCircleMagic.color = Color.cyan;
+                            mainModule.startColor = Color.cyan;
+                            SetIce();
+                        }
                         break;
 
                     case 3:
-                        UpCircleMagic.color = Color.yellow;
-                        mainModule.startColor = Color.yellow;
-                        SetThunder();
+                        if (tMM.numberOfBossKilled >= 4)
+                        {
+                            UpCircleMagic.color = Color.yellow;
+                            mainModule.startColor = Color.yellow;
+                            SetThunder();
+                        }
                         break;
 
                     case 4:
-                        UpCircleMagic.color = Color.white;
-                        mainModule.startColor = Color.white;
-                        SetWind();
+                        if (tMM.numberOfBossKilled >= 1)
+                        {
+                            UpCircleMagic.color = Color.white;
+                            mainModule.startColor = Color.white;
+                            SetWind();
+                        }
                         break;
 
                     default:
                         return;
                 }
-                particleMagic.Play();
-                activate = true;
-                StartCoroutine(drainMana());
+                if (activate)
+                {
+                    particleMagic.Play();
+                    StartCoroutine(drainMana());
+                }
+                else
+                {
+                    UpCircleMagic.color = Color.black;
+                    particleMagic.Stop();
+                    SetNormal();
+                }
             }
         }
     }

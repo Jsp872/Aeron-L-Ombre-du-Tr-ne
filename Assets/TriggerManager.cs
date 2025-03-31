@@ -48,11 +48,13 @@ public class TriggerManager : MonoBehaviour
                     scaleSave = -enemyTransform.localScale.x;
                 oneTimeSaveScale = true;
             }
+            if (enemy.finalBoss || enemy.falseFinalBoss)
+                enemyAnimator.SetBool("IsMoving", true);
             if (direction.x >= 0)
-                enemyTransform.localScale = new Vector3(scaleSave, enemyTransform.localScale.y, enemyTransform.localScale.z);
+                    enemyTransform.localScale = new Vector3(scaleSave, enemyTransform.localScale.y, enemyTransform.localScale.z);
             else if (direction.x < 0)
-                enemyTransform.localScale = new Vector3(-scaleSave, enemyTransform.localScale.y, enemyTransform.localScale.z);
-               
+                    enemyTransform.localScale = new Vector3(-scaleSave, enemyTransform.localScale.y, enemyTransform.localScale.z);
+                
 
             if (!touch)
             {

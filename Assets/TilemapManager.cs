@@ -11,7 +11,7 @@ public class TileMapManager : MonoBehaviour
 
     [SerializeField] bool start;
 
-
+    public int numberOfBossKilled = 0;
     public void Start()
     {
         if (start)

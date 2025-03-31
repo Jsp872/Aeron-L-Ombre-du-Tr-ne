@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     PlayerMagic playerMagic;
 
+    ColliderManager cM;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
         StartCoroutine(RecoveryStaminaAndMana());
         playerMagic = GetComponent<PlayerMagic>();
+        cM = GetComponent<ColliderManager>();
     }
 
     private void FixedUpdate()
@@ -82,6 +84,11 @@ public class PlayerController : MonoBehaviour
             {
                 mana = Mathf.Min(mana + 10, 100);
                 OnManaChanged?.Invoke(mana);
+            }
+            if (life < 100 && !attack && !isRunning && !block && !cM.waitForAttack)
+            {
+                life = Mathf.Min(life + 1, 100);
+                OnLifeChanged?.Invoke(life);
             }
         }
     }
