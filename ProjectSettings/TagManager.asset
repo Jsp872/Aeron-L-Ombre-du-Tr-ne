@@ -15,11 +15,11 @@ TagManager:
   - Enemy
   - Dead
   - ZoneDetector
-  - 
-  - 
-  - 
-  - 
-  - 
+  - CastleGuard
+  - EndAnim
+  - Spike
+  - StartAnim
+  - Message
   - 
   - 
   - 
