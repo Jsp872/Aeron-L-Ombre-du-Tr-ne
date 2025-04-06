@@ -22682,15 +22682,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0cbbfb2e45d1234ca76b90eca8e87a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  damage: 5
-  propulsionForce: 10
+  moveSpeed: 7
+  damage: 10
+  propulsionForce: 25
   bossCheck: 1
   inverseLook: 0
   valueOfEnemy: 0
   initialPosition: {x: 0, y: 0}
   life: 3
-  maxLife: 3
+  maxLife: 50
   rb: {fileID: 0}
 --- !u!61 &148487802
 BoxCollider2D:
@@ -25546,15 +25546,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0cbbfb2e45d1234ca76b90eca8e87a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  damage: 5
-  propulsionForce: 10
+  moveSpeed: 7
+  damage: 15
+  propulsionForce: 25
   bossCheck: 1
   inverseLook: 0
   valueOfEnemy: 0
   initialPosition: {x: 0, y: 0}
   life: 3
-  maxLife: 3
+  maxLife: 100
   rb: {fileID: 0}
 --- !u!114 &295555593
 MonoBehaviour:
@@ -67558,14 +67558,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  damage: 1
+  damage: 8
   propulsionForce: 15
   bossCheck: 1
   inverseLook: 0
   valueOfEnemy: 0
   initialPosition: {x: 0, y: 0}
   life: 3
-  maxLife: 3
+  maxLife: 30
   rb: {fileID: 0}
 --- !u!95 &779650929
 Animator:
@@ -175652,7 +175652,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1060a2381eb0ae34f9954d79de016979, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -179172,7 +179172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  damage: 1
+  damage: 3
   propulsionForce: 30
   bossCheck: 1
   inverseLook: 0
@@ -199433,6 +199433,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8952551901936610120, guid: d8f92db366dd9b44bb46c19aecc0f376, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952551901936610120, guid: d8f92db366dd9b44bb46c19aecc0f376, type: 3}
+      propertyPath: maxLife
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -199652,15 +199660,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0cbbfb2e45d1234ca76b90eca8e87a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  damage: 1
+  moveSpeed: 3
+  damage: 4
   propulsionForce: 15
   bossCheck: 1
   inverseLook: 0
   valueOfEnemy: 0
   initialPosition: {x: 0, y: 0}
   life: 6
-  maxLife: 6
+  maxLife: 40
   rb: {fileID: 0}
 --- !u!1 &6020108901671360182
 GameObject:
@@ -199794,6 +199802,10 @@ PrefabInstance:
     - target: {fileID: 3402703578237456859, guid: 55fb659d9c7aa9b4e8799df9751eedd6, type: 3}
       propertyPath: m_Name
       value: MagicalFairy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5045472688762986048, guid: 55fb659d9c7aa9b4e8799df9751eedd6, type: 3}
+      propertyPath: damage
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5415571443024633347, guid: 55fb659d9c7aa9b4e8799df9751eedd6, type: 3}
       propertyPath: m_LocalPosition.x

@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  damage: 1
+  damage: 2
   propulsionForce: 20
   bossCheck: 0
   inverseLook: 0

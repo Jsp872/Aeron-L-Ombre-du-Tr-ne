@@ -581,14 +581,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  damage: 2
+  damage: 7
   propulsionForce: 20
   bossCheck: 0
   inverseLook: 0
   valueOfEnemy: 5
   initialPosition: {x: 0, y: 0}
   life: 0
-  maxLife: 3
+  maxLife: 15
   rb: {fileID: 0}
 --- !u!1 &7110594365796580671
 GameObject:
