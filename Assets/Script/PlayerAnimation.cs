@@ -7,6 +7,10 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] TriggerManager tM;
     public int whereToLeave;
+
+    [SerializeField] AudioManager aM;
+    [SerializeField] AudioSource audioSource;
+    public int audioForTheZone;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 11)
@@ -53,7 +57,25 @@ public class PlayerAnimation : MonoBehaviour
                     gameObject.transform.position += new Vector3(0.05f, 0, 0);
                     break;
             }
-
+            switch (audioForTheZone)
+            {
+                case 0:
+                    audioSource.resource = aM.song[0];
+                    break;
+                case 1:
+                    audioSource.resource = aM.song[1];
+                    break;
+                case 2:
+                    audioSource.resource = aM.song[2];
+                    break;
+                case 3:
+                    audioSource.resource = aM.song[3];
+                    break;
+                case 4:
+                    audioSource.resource = aM.song[4];
+                    break;
+            }
+            audioSource.Play();
         }
     }
 }

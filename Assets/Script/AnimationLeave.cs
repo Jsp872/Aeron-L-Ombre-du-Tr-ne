@@ -9,4 +9,6 @@ public class NewPositionOfPlayer : MonoBehaviour
 
     public GameObject oldMap;
     public GameObject newMap;
+
+    public int audioForTheZone;
 }

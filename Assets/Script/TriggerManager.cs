@@ -90,7 +90,7 @@ public class TriggerManager : MonoBehaviour
         }
         if (collision.gameObject.layer == 10)
         {
-            playerTransform.transform.position = new Vector2(0, 15);
+            playerTransform.transform.position = new Vector2(0.89f, 117.24f);
         }
         if (collision.gameObject.layer == 13)
         {
@@ -101,6 +101,7 @@ public class TriggerManager : MonoBehaviour
             NewPositionOfPlayer newPos = collision.GetComponent<NewPositionOfPlayer>();
             newPos.newMap.SetActive(true);
             pA.whereToLeave = newPos.whereToLeave;
+            pA.audioForTheZone = newPos.audioForTheZone;
             playerAnimation.transform.position = playerTransform.position;
             playerAnimation.transform.rotation = playerTransform.rotation;
             player.transform.position = new Vector2(-33.9f, 96.48f);
