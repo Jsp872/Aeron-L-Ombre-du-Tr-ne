@@ -19,9 +19,9 @@ TagManager:
   - EndAnim
   - Spike
   - StartAnim
-  - Message
-  - 
-  - 
+  - Interactable
+  - BlockDungeon
+  - AttackEnemyTrigger
   - 
   - 
   - 

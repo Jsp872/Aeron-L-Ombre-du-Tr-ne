@@ -3312,13 +3312,15 @@ GameObject:
   - component: {fileID: 1359182878}
   - component: {fileID: 1359182877}
   - component: {fileID: 1359182876}
+  - component: {fileID: 1359182880}
+  - component: {fileID: 1359182879}
   m_Layer: 0
   m_Name: Option
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1359182875
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3356,10 +3358,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoPanel: {fileID: 876422249}
   audioPanel: {fileID: 1458835230}
-  toggleForFullScreen: {fileID: 1775477672}
-  toggleForMuteSound: {fileID: 1544511344}
-  soundVolume: {fileID: 1951271889}
-  audioSource: {fileID: 1590882630}
 --- !u!114 &1359182877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3398,6 +3396,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1359182874}
   m_CullTransparentMesh: 1
+--- !u!114 &1359182879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359182874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f6a45a49bef674eafb988f652c9efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleForFullScreen: {fileID: 1775477672}
+--- !u!114 &1359182880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359182874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47335044678409749a7ff9e229a8b5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleForMuteSound: {fileID: 1544511344}
+  soundVolume: {fileID: 1951271889}
+  audioSource: {fileID: 1590882630}
 --- !u!1 &1435776232
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,7 +3656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1465850975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4599,10 +4625,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1359182876}
-        m_TargetAssemblyTypeName: UIOption, Assembly-CSharp
+      - m_Target: {fileID: 1359182880}
+        m_TargetAssemblyTypeName: AudioSettings, Assembly-CSharp
         m_MethodName: SetMuteSound
-        m_Mode: 0
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4854,7 +4880,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -5475,10 +5501,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1359182876}
-        m_TargetAssemblyTypeName: UIOption, Assembly-CSharp
+      - m_Target: {fileID: 1359182879}
+        m_TargetAssemblyTypeName: VideoSettings, Assembly-CSharp
         m_MethodName: SetFullScreen
-        m_Mode: 0
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5795,8 +5821,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1359182876}
-        m_TargetAssemblyTypeName: UIOption, Assembly-CSharp
+      - m_Target: {fileID: 1359182880}
+        m_TargetAssemblyTypeName: AudioSettings, Assembly-CSharp
         m_MethodName: SetSoundVolume
         m_Mode: 1
         m_Arguments:
